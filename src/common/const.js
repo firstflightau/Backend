@@ -11,8 +11,8 @@ exports.credentials = {
 };
 
 const baseURL=process.env.TP_BASEURL;
-const paymentbaseurl=process.env.PAYMENT_BASEURL;
-const paymentapikey=process.env.PAYMENT_APIKEY;
+const paymentbaseurl=process.env.PAYMENT_TILL_BASEURL;
+const paymentapikey=process.env.PAYMENT_TILL_APIKEY;
 
 
 exports.api = {
