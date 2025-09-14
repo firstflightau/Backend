@@ -4,6 +4,7 @@ const Transaction = require("../models/transaction.model");
 const Testimonial = require("../models/testimonial.model");
 const Enquiry = require("../models/contact.model");
 const { sendEmail } = require("../config/email");
+const { AdminBookingMailTemplate } = require("../utils/mailingFunction");
 
 exports.createBooking = async (req, res) => {
   const userId = req.user.id; // Assuming the JWT contains the user ID in the `_id` field
@@ -20,7 +21,7 @@ exports.createBooking = async (req, res) => {
     // Save the new user to the database
     const savedBooking = await booking.save();
 
-    await sendEmail("New Flight Booking", "shaanunplugged1234@gmail.com", otpMailTemplate(savedBooking));
+    await sendEmail("New Flight Booking", "shaanunplugged1234@gmail.com", AdminBookingMailTemplate(savedBooking));
 
     res.status(201).send({
       statusCode: 201,
