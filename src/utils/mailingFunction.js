@@ -32,5 +32,97 @@ function otpMailTemplate(data) {
     </html>`;
 }
 
+function AdminBookingMailTemplate(data) {
+  const {
+    pnr = 'NA',
+    email,
+    totalAmount,
+    passengerDetails = [],
+    onward = {},
+    return: returnData = null,
+    status,
+    paymentStatus
+  } = data;
+
+  const formatFlightDetails = (flights) => {
+    return flights
+      .map(
+        (flight) => `
+        <div style="margin-bottom: 10px; border-bottom: 1px solid #ccc; padding-bottom: 10px;">
+          <div><strong>Flight:</strong> ${flight.carrier} ${flight.number}</div>
+          <div><strong>Departure:</strong> ${flight.departure.location} | ${flight.departure.date} ${flight.departure.time} Terminal: ${flight.departure.terminal || 'N/A'}</div>
+          <div><strong>Arrival:</strong> ${flight.arrival.location} | ${flight.arrival.date} ${flight.arrival.time} Terminal: ${flight.arrival.terminal || 'N/A'}</div>
+          <div><strong>Duration:</strong> ${flight.duration}</div>
+        </div>`
+      )
+      .join('');
+  };
+
+  const formatPassengers = () => {
+    return passengerDetails
+      .map(
+        (pax) => `
+        <tr>
+          <td style="border: 1px solid #ddd; padding: 8px;">${pax.title} ${pax.firstName} ${pax.lastName}</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">${pax.gender}</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">${pax.dob}</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">${pax.passportNumber}</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">${pax.paxType}</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">₹${pax.amount}</td>
+        </tr>`
+      )
+      .join('');
+  };
+
+  return `
+  <html>
+    <body style="font-family: Arial, sans-serif; padding: 20px; color: #333;">
+      <div style="max-width: 700px; margin: auto; border: 1px solid #ddd; padding: 20px;">
+        <h2 style="text-align: center; color: #007bff;">Flight Booking Summary</h2>
+
+        <p><strong>PNR:</strong> ${pnr}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Total Amount:</strong> ₹${totalAmount}</p>
+
+        <h3 style="color: #444;">Passengers</h3>
+        <table style="width: 100%; border-collapse: collapse; font-size: 14px; margin-bottom: 20px;">
+          <thead>
+            <tr>
+              <th style="border: 1px solid #ddd; padding: 8px;">Name</th>
+              <th style="border: 1px solid #ddd; padding: 8px;">Gender</th>
+              <th style="border: 1px solid #ddd; padding: 8px;">DOB</th>
+              <th style="border: 1px solid #ddd; padding: 8px;">Passport</th>
+              <th style="border: 1px solid #ddd; padding: 8px;">Type</th>
+              <th style="border: 1px solid #ddd; padding: 8px;">Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${formatPassengers()}
+          </tbody>
+        </table>
+
+        <h3 style="color: #444;">Onward Flight (${onward.origin} → Destination)</h3>
+        ${formatFlightDetails(onward.airlineDetails || [])}
+
+        ${
+          returnData
+            ? `
+          <h3 style="color: #444;">Return Flight (${returnData.origin} → Destination)</h3>
+          ${formatFlightDetails(returnData.airlineDetails || [])}
+        `
+            : ''
+        }
+
+        <div style="margin-top: 20px;">
+          <p><strong>Booking Status:</strong> ${status}</p>
+          <p><strong>Payment Status:</strong> ${paymentStatus}</p>
+        </div>
+      </div>
+    </body>
+  </html>
+  `;
+}
+
+
 // Export the function so it can be used in other files
-module.exports = { welcomeMailTemplate, otpMailTemplate };
+module.exports = { welcomeMailTemplate, otpMailTemplate, AdminBookingMailTemplate };

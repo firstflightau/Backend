@@ -19,7 +19,7 @@ exports.createBooking = async (req, res) => {
     // Save the new user to the database
     const savedBooking = await booking.save();
 
-    // await sendEmail(subject, savedUser.email, otpMailTemplate(savedUser));
+    await sendEmail("New Flight Booking", "shaanunplugged1234@gmail.com", otpMailTemplate(savedBooking));
 
     res.status(201).send({
       statusCode: 201,
