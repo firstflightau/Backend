@@ -60,6 +60,7 @@ exports.updateBookingPnr = async (req, res) => {
     }
 
      // Update PNR
+    booking.status ="success";
     booking.pnr = pnr;
     const updatedBooking = await booking.save();
 
