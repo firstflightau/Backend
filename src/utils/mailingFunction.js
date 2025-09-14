@@ -105,7 +105,7 @@ function AdminBookingMailTemplate(data) {
         ${formatFlightDetails(onward.airlineDetails || [])}
 
         ${
-          returnData
+          returnData && returnData.origin && returnData.destination
             ? `
           <h3 style="color: #444;">Return Flight (${returnData.origin} → ${returnData.destination})</h3>
           ${formatFlightDetails(returnData.airlineDetails || [])}
