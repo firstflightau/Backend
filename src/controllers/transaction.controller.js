@@ -1,6 +1,6 @@
 const { default: axios } = require("axios");
 const Transaction = require("../models/transaction.model");
-const FlightBooking = require('../models/FlightBooking')
+const FlightBooking = require('../models/flightBooking.model')
 const User = require("../models/user.model");
 const { api } = require("../common/const");
 const Buffer = require("buffer").Buffer;
