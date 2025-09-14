@@ -1,7 +1,7 @@
 function welcomeMailTemplate(data) {
-    const { otp } = data; // Destructure the otp value from the data object
+  const { otp } = data; // Destructure the otp value from the data object
 
-    return `
+  return `
     <html>
         <body>
           <h2>Welcome!</h2>
@@ -14,12 +14,11 @@ function welcomeMailTemplate(data) {
     </html>`;
 }
 
-
 // Define the OTP email template function
 function otpMailTemplate(data) {
-    const { otp } = data; // Destructure the otp value from the data object
+  const { otp } = data; // Destructure the otp value from the data object
 
-    return `
+  return `
     <html>
         <body>
           <h2>Welcome!</h2>
@@ -34,14 +33,14 @@ function otpMailTemplate(data) {
 
 function AdminBookingMailTemplate(data) {
   const {
-    pnr = 'NA',
+    pnr = "NA",
     email,
     totalAmount,
     passengerDetails = [],
     onward = {},
     return: returnData = null,
     status,
-    paymentStatus
+    paymentStatus,
   } = data;
 
   const formatFlightDetails = (flights) => {
@@ -50,14 +49,23 @@ function AdminBookingMailTemplate(data) {
         (flight) => `
         <div style="margin-bottom: 10px; border-bottom: 1px solid #ccc; padding-bottom: 10px;">
           <div><strong>Flight:</strong> ${flight.carrier} ${flight.number}</div>
-          <div><strong>Departure:</strong> ${flight.departure.location} | ${flight.departure.date} ${flight.departure.time} Terminal: ${flight.departure.terminal || 'N/A'}</div>
-          <div><strong>Arrival:</strong> ${flight.arrival.location} | ${flight.arrival.date} ${flight.arrival.time} Terminal: ${flight.arrival.terminal || 'N/A'}</div>
+          <div><strong>Departure:</strong> ${flight.departure.location} | ${
+          flight.departure.date
+        } ${flight.departure.time} Terminal: ${
+          flight.departure.terminal || "N/A"
+        }</div>
+          <div><strong>Arrival:</strong> ${flight.arrival.location} | ${
+          flight.arrival.date
+        } ${flight.arrival.time} Terminal: ${
+          flight.arrival.terminal || "N/A"
+        }</div>
           <div><strong>Duration:</strong> ${flight.duration}</div>
         </div>`
       )
-      .join('');
+      .join("");
   };
 
+  // <td style="border: 1px solid #ddd; padding: 8px;">₹${pax.amount}</td>
   const formatPassengers = () => {
     return passengerDetails
       .map(
@@ -68,10 +76,9 @@ function AdminBookingMailTemplate(data) {
           <td style="border: 1px solid #ddd; padding: 8px;">${pax.dob}</td>
           <td style="border: 1px solid #ddd; padding: 8px;">${pax.passportNumber}</td>
           <td style="border: 1px solid #ddd; padding: 8px;">${pax.paxType}</td>
-          <td style="border: 1px solid #ddd; padding: 8px;">₹${pax.amount}</td>
-        </tr>`
+          </tr>`
       )
-      .join('');
+      .join("");
   };
 
   return `
@@ -93,7 +100,7 @@ function AdminBookingMailTemplate(data) {
               <th style="border: 1px solid #ddd; padding: 8px;">DOB</th>
               <th style="border: 1px solid #ddd; padding: 8px;">Passport</th>
               <th style="border: 1px solid #ddd; padding: 8px;">Type</th>
-              <th style="border: 1px solid #ddd; padding: 8px;">Amount</th>
+             
             </tr>
           </thead>
           <tbody>
@@ -101,16 +108,20 @@ function AdminBookingMailTemplate(data) {
           </tbody>
         </table>
 
-        <h3 style="color: #444;">Onward Flight (${onward.origin} → ${onward.destination})</h3>
+        <h3 style="color: #444;">Onward Flight (${onward.origin} → ${
+    onward.destination
+  })</h3>
         ${formatFlightDetails(onward.airlineDetails || [])}
 
         ${
           returnData && returnData.origin && returnData.destination
             ? `
-          <h3 style="color: #444;">Return Flight (${returnData.origin} → ${returnData.destination})</h3>
+          <h3 style="color: #444;">Return Flight (${returnData.origin} → ${
+                returnData.destination
+              })</h3>
           ${formatFlightDetails(returnData.airlineDetails || [])}
         `
-            : ''
+            : ""
         }
 
         <div style="margin-top: 20px;">
@@ -123,6 +134,9 @@ function AdminBookingMailTemplate(data) {
   `;
 }
 
-
 // Export the function so it can be used in other files
-module.exports = { welcomeMailTemplate, otpMailTemplate, AdminBookingMailTemplate };
+module.exports = {
+  welcomeMailTemplate,
+  otpMailTemplate,
+  AdminBookingMailTemplate,
+};

@@ -21,7 +21,11 @@ exports.createBooking = async (req, res) => {
     // Save the new user to the database
     const savedBooking = await booking.save();
 
-    await sendEmail("New Flight Booking", "shaanunplugged1234@gmail.com", AdminBookingMailTemplate(savedBooking));
+    await sendEmail(
+      "New Flight Booking",
+      "it.designo@gmail.com",
+      AdminBookingMailTemplate(savedBooking)
+    );
 
     res.status(201).send({
       statusCode: 201,
@@ -37,19 +41,18 @@ exports.createBooking = async (req, res) => {
 exports.updateBookingPnr = async (req, res) => {
   const userId = req.user.id; // Assuming the JWT contains the user ID in the `_id` field
   // console.log(req.user)
-  
-     const bookingId = req.params.id;
-     const { pnr } = req.body;
 
-     if (!pnr) {
-      return res.status(400).json({
-        statusCode: 400,
-        message: "PNR is required in the request body",
-      });
-    }
-    try {
+  const bookingId = req.params.id;
+  const { pnr } = req.body;
 
- // Find booking and make sure it belongs to the user
+  if (!pnr) {
+    return res.status(400).json({
+      statusCode: 400,
+      message: "PNR is required in the request body",
+    });
+  }
+  try {
+    // Find booking and make sure it belongs to the user
     const booking = await FlightBooking.findOne({ _id: bookingId, userId });
 
     if (!booking) {
@@ -59,8 +62,8 @@ exports.updateBookingPnr = async (req, res) => {
       });
     }
 
-     // Update PNR
-    booking.status ="success";
+    // Update PNR
+    booking.status = "success";
     booking.pnr = pnr;
     const updatedBooking = await booking.save();
 
