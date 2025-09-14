@@ -24,7 +24,7 @@ exports.createTransaction = async (req, res) => {
       merchantTransactionId,
       amount,
       currency: currency,
-      successUrl: `${frontendUrl}/flight/reviewbooking/ValidatingPayment/${reservationId}/${bookingId}`,
+      successUrl: `${frontendUrl}/flight/reviewbooking/validatepayment/${reservationId}/${bookingId}`,
       cancelUrl: `http://localhost:8000/api/transaction/cancel/${reservationId}/${bookingId}`,
       errorUrl: `${frontendUrl}/ticket/failed/${reservationId}/${bookingId}`,
     };
