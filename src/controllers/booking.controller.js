@@ -32,6 +32,48 @@ exports.createBooking = async (req, res) => {
   }
 };
 
+exports.updateBookingPnr = async (req, res) => {
+  const userId = req.user.id; // Assuming the JWT contains the user ID in the `_id` field
+  // console.log(req.user)
+  
+     const bookingId = req.params.id;
+     const { pnr } = req.body;
+
+     if (!pnr) {
+      return res.status(400).json({
+        statusCode: 400,
+        message: "PNR is required in the request body",
+      });
+    }
+    try {
+
+ // Find booking and make sure it belongs to the user
+    const booking = await FlightBooking.findOne({ _id: bookingId, userId });
+
+    if (!booking) {
+      return res.status(404).json({
+        statusCode: 404,
+        message: "Booking not found or unauthorized",
+      });
+    }
+
+     // Update PNR
+    booking.pnr = pnr;
+    const updatedBooking = await booking.save();
+
+    // await sendEmail(subject, savedUser.email, otpMailTemplate(savedUser));
+
+    res.status(201).send({
+      statusCode: 201,
+      message: "Booking successfully",
+      data: "Ok",
+    });
+  } catch (err) {
+    const errorMsg = err.message || "Unknown error";
+    res.status(500).send({ statusCode: 500, message: errorMsg });
+  }
+};
+
 exports.getSingleBooking = async (req, res) => {
   const { id } = req.params; // Extracting the ID from the URL
   try {

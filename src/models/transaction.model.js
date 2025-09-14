@@ -9,6 +9,11 @@ const transactionSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User", // Ensure "User" model is correctly defined and imported
     },
+    bookingId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "FlightBooking",
+      required: true,
+    },
     merchantTransactionId: String,
     reservationId: String,
     amount: String,

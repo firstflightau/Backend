@@ -65,7 +65,7 @@ const flightBookingSchema = new mongoose.Schema(
     },
     paymentStatus: {
        type: String,
-       enum: ['pending', 'failed', 'success'],
+       enum: ['pending', 'failed', 'success', 'cancel'],
        default: 'pending',
     }
   },

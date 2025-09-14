@@ -1,5 +1,6 @@
 const { default: axios } = require("axios");
 const Transaction = require("../models/transaction.model");
+const FlightBooking = require('../models/FlightBooking')
 const User = require("../models/user.model");
 const { api } = require("../common/const");
 const Buffer = require("buffer").Buffer;
@@ -56,6 +57,7 @@ exports.createTransaction = async (req, res) => {
     const newTransaction = new Transaction({
       userId,
       merchantTransactionId,
+      bookingId,
       reservationId,
       amount,
       currency,
@@ -93,6 +95,23 @@ exports.successTransaction = async (req, res) => {
         .send({ statusCode: 404, message: "Transaction not found" });
     }
 
+    // 2. Get the bookingId from the transaction
+    const { bookingId } = transaction;
+
+    // 3. Update the corresponding booking's paymentStatus
+    const updatedBooking = await FlightBooking.findByIdAndUpdate(
+      bookingId,
+      { paymentStatus: "success" },
+      { new: true }
+    );
+
+    if (!updatedBooking) {
+      return res.status(404).send({
+        statusCode: 404,
+        message: "Booking not found"
+      });
+    }
+
     res.status(200).send({
       statusCode: 200,
       message: "Transaction updated successfully",
@@ -119,6 +138,23 @@ exports.failedTransaction = async (req, res) => {
         .send({ statusCode: 404, message: "Transaction not found" });
     }
 
+      // 2. Get the bookingId from the transaction
+    const { bookingId } = transaction;
+
+    // 3. Update the corresponding booking's paymentStatus
+    const updatedBooking = await FlightBooking.findByIdAndUpdate(
+      bookingId,
+      { paymentStatus: "cancel" },
+      { new: true }
+    );
+
+    if (!updatedBooking) {
+      return res.status(404).send({
+        statusCode: 404,
+        message: "Booking not found"
+      });
+    }
+
     res.status(200).send({
       statusCode: 200,
       message: "Transaction updated successfully",
@@ -143,6 +179,23 @@ exports.errorTransaction = async (req, res) => {
       return res
         .status(404)
         .send({ statusCode: 404, message: "Transaction not found" });
+    }
+
+      // 2. Get the bookingId from the transaction
+    const { bookingId } = transaction;
+
+    // 3. Update the corresponding booking's paymentStatus
+    const updatedBooking = await FlightBooking.findByIdAndUpdate(
+      bookingId,
+      { paymentStatus: "failed" },
+      { new: true }
+    );
+
+    if (!updatedBooking) {
+      return res.status(404).send({
+        statusCode: 404,
+        message: "Booking not found"
+      });
     }
 
     res.status(200).send({
