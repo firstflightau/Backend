@@ -49,12 +49,12 @@ const flightBookingSchema = new mongoose.Schema(
     email: String,
     onward:{
       origin: String,
-      desination: String,
+      destination: String,
       airlineDetails: [airlineDetailsSchema],
     },
     return:{
       origin: String,
-      desination: String,
+      destination: String,
       airlineDetails: [airlineDetailsSchema],
     },
     passengerDetails: [passengerDetailsSchema],
