@@ -101,13 +101,13 @@ function AdminBookingMailTemplate(data) {
           </tbody>
         </table>
 
-        <h3 style="color: #444;">Onward Flight (${onward.origin} → Destination)</h3>
+        <h3 style="color: #444;">Onward Flight (${onward.origin} → ${onward.destination})</h3>
         ${formatFlightDetails(onward.airlineDetails || [])}
 
         ${
           returnData
             ? `
-          <h3 style="color: #444;">Return Flight (${returnData.origin} → Destination)</h3>
+          <h3 style="color: #444;">Return Flight (${returnData.origin} → ${returnData.destination})</h3>
           ${formatFlightDetails(returnData.airlineDetails || [])}
         `
             : ''
