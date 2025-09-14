@@ -3,6 +3,7 @@ const User = require("../models/user.model");
 const Transaction = require("../models/transaction.model");
 const Testimonial = require("../models/testimonial.model");
 const Enquiry = require("../models/contact.model");
+const { sendEmail } = require("../config/email");
 
 exports.createBooking = async (req, res) => {
   const userId = req.user.id; // Assuming the JWT contains the user ID in the `_id` field
