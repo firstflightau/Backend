@@ -26,7 +26,7 @@ exports.createBooking = async (req, res) => {
     res.status(201).send({
       statusCode: 201,
       message: "Booking successfully",
-      data: "Ok",
+      bookingId: savedBooking._id,
     });
   } catch (err) {
     const errorMsg = err.message || "Unknown error";
