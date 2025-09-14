@@ -12,9 +12,9 @@ const router = express.Router();
 //   /api/transaction/success/:reservationId
 router.post("/create", authMiddleware, transactionController.createTransaction);
 
-router.get("/success/:reservationId", transactionController.successTransaction);
-router.get("/cancel/:reservationId", transactionController.failedTransaction);
-router.get("/failed/:reservationId", transactionController.errorTransaction);
+router.get("/success/:reservationId/:bookingId", transactionController.successTransaction);
+router.get("/cancel/:reservationId/:bookingId", transactionController.failedTransaction);
+router.get("/failed/:reservationId/:bookingId", transactionController.errorTransaction);
 
 
 
