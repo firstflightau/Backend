@@ -15,7 +15,7 @@ exports.createTransaction = async (req, res) => {
     const userId = req?.user?.id || "6789f4438c60265589a9b470"; // Assuming the JWT contains the user ID in the `_id` field
     // console.log(req.user)
 
-    const { amount, reservationId } = req.body;
+    const { amount, reservationId,bookingId } = req.body;
 
     const merchantTransactionId = "FFT" + Date.now();
     const currency = "AUD";
@@ -24,9 +24,9 @@ exports.createTransaction = async (req, res) => {
       merchantTransactionId,
       amount,
       currency: currency,
-      successUrl: `${frontendUrl}/flight/reviewbooking/ValidatingPayment/${reservationId}`,
-      cancelUrl: `http://localhost:8000/api/transaction/cancel/${reservationId}`,
-      errorUrl: `${frontendUrl}/ticket/failed/${reservationId}`,
+      successUrl: `${frontendUrl}/flight/reviewbooking/ValidatingPayment/${reservationId}/${bookingId}`,
+      cancelUrl: `http://localhost:8000/api/transaction/cancel/${reservationId}/${bookingId}`,
+      errorUrl: `${frontendUrl}/ticket/failed/${reservationId}/${bookingId}`,
     };
 
     // Prepare basic auth header value
