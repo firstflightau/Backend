@@ -23,7 +23,8 @@ exports.createBooking = async (req, res) => {
 
     await sendEmail(
       "New Flight Booking",
-      "it.designo@gmail.com",
+      // "it.designo@gmail.com",
+      "shaanunplugged1234@gmail.com",
       AdminBookingMailTemplate(savedBooking)
     );
 

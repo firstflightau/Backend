@@ -1,37 +1,42 @@
 const mongoose = require("mongoose");
 
-const passengerDetailsSchema = new mongoose.Schema({
-  title: String,
-  firstName: String,
-  lastName: String,
-  dob: String,
-  gender: String,
-  passportNumber: String,
-  passportExpire: String,
-  passportIssueCountry: String,
-  paxType: String,
-  amount: Number,
-  ticketNumber: String,
-}, { _id: false });
-
-
-const airlineDetailsSchema = new mongoose.Schema({
-  departure: {
-    location: String,
-    date: String,
-    time: String,
-    terminal: String
+const passengerDetailsSchema = new mongoose.Schema(
+  {
+    title: String,
+    firstName: String,
+    lastName: String,
+    dob: String,
+    gender: String,
+    passportNumber: String,
+    passportExpire: String,
+    passportIssueCountry: String,
+    paxType: String,
+    amount: Number,
+    ticketNumber: String,
   },
-  arrival: {
-    location: String,
-    date: String,
-    time: String,
-    terminal: String
+  { _id: false }
+);
+
+const airlineDetailsSchema = new mongoose.Schema(
+  {
+    departure: {
+      location: String,
+      date: String,
+      time: String,
+      terminal: String,
+    },
+    arrival: {
+      location: String,
+      date: String,
+      time: String,
+      terminal: String,
+    },
+    duration: String,
+    carrier: String,
+    number: String,
   },
-  duration: String,
-  carrier: String,
-  number: String
-}, { _id: false });
+  { _id: false }
+);
 
 const flightBookingSchema = new mongoose.Schema(
   {
@@ -39,20 +44,21 @@ const flightBookingSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
-    pnr:{
+    pnr: {
       type: String,
-      default: 'NA',
+      default: "NA",
       required: true,
     },
     totalAmount: Number,
     markup: Number,
     email: String,
-    onward:{
+    phoneNumber: String,
+    onward: {
       origin: String,
       destination: String,
       airlineDetails: [airlineDetailsSchema],
     },
-    return:{
+    return: {
       origin: String,
       destination: String,
       airlineDetails: [airlineDetailsSchema],
@@ -60,14 +66,14 @@ const flightBookingSchema = new mongoose.Schema(
     passengerDetails: [passengerDetailsSchema],
     status: {
       type: String,
-      enum: ['pending', 'failed', 'success'],
-      default: 'pending',
+      enum: ["pending", "failed", "success"],
+      default: "pending",
     },
     paymentStatus: {
-       type: String,
-       enum: ['pending', 'failed', 'success', 'cancel'],
-       default: 'pending',
-    }
+      type: String,
+      enum: ["pending", "failed", "success", "cancel"],
+      default: "pending",
+    },
   },
   {
     timestamps: true,

@@ -1,4 +1,8 @@
-const { AirlineData, AirportData, MarkUpDiscount } = require("../models/staticData.model");
+const {
+  AirlineData,
+  AirportData,
+  MarkUpDiscount,
+} = require("../models/staticData.model");
 const requestIp = require("request-ip");
 const geoip = require("geoip-lite");
 
@@ -137,12 +141,9 @@ const combineUnique = (array1, array2, uniqueKey) => {
   return uniqueArray;
 };
 
-
-
 exports.getAllAirportList = async (req, res) => {
-  try {   
-
-    const response = await AirportData.find({});  
+  try {
+    const response = await AirportData.find({});
     res.status(200).send({
       statusCode: 200,
       message: "Fetch all airport list successfully.",
@@ -154,75 +155,68 @@ exports.getAllAirportList = async (req, res) => {
   }
 };
 
-
-
 //getMarkUpAndDiscount
-
+// ✅ GET API
 exports.getMarkUpAndDiscount = async (req, res) => {
   try {
     const response = await MarkUpDiscount.findOne({});
+    if (!response) {
+      return res.status(404).send({
+        statusCode: 404,
+        message: "Markup and discount data not found.",
+      });
+    }
 
     res.status(200).send({
       statusCode: 200,
-      message: "Fetch markup and discount successfully.",
+      message: "Fetched markup and discount successfully.",
       data: response,
     });
   } catch (err) {
-    const errorMsg = err.message || "Unknown error";
-    res.status(500).send({ statusCode: 500, message: errorMsg });
+    res
+      .status(500)
+      .send({ statusCode: 500, message: err.message || "Unknown error" });
   }
 };
 
-
+// ✅ UPDATE API
 exports.updateMarkUpAndDiscount = async (req, res) => {
-
-  const { id } = req.params; // Extracting the ID from the URL
+  const { id } = req.params;
 
   try {
-    const { markup, discount } = req.body;  // The ID and new values come in the request body
+    const { markup, discount, destinationMarkups } = req.body;
 
-    // Validate if the required ID is present
     if (!id) {
-      return res.status(400).send({
-        statusCode: 400,
-        message: 'ID is required.',
-      });
+      return res
+        .status(400)
+        .send({ statusCode: 400, message: "ID is required." });
     }
 
     const existingData = await MarkUpDiscount.findById(id);
     if (!existingData) {
-      return res.status(404).send({
-        statusCode: 404,
-        message: 'Markup and discount data not found.',
-      });
+      return res
+        .status(404)
+        .send({ statusCode: 404, message: "Data not found." });
     }
 
-
-    // Update the fields that are provided
     const updateData = {};
-    if (markup !== undefined) {
-      updateData.markup = markup;
-    }
-    if (discount !== undefined) {
-      updateData.discount = discount;
-    }
 
-    // Perform the update
-    const updatedData = await MarkUpDiscount.findByIdAndUpdate(
-      id, 
-      updateData,  // Update only the provided fields
-      { new: true }  // Return the updated document
-    );
+    if (markup) updateData.markup = markup;
+    if (discount) updateData.discount = discount;
+    if (destinationMarkups) updateData.destinationMarkups = destinationMarkups;
 
-      res.status(200).send({
-        statusCode: 200,
-        message: "Fetch markup and discount successfully.",
-        data: updatedData,
-      });
+    const updatedData = await MarkUpDiscount.findByIdAndUpdate(id, updateData, {
+      new: true,
+    });
 
-    } catch (err) {
-      const errorMsg = err.message || "Unknown error";
-      res.status(500).send({ statusCode: 500, message: errorMsg });
-    }
-
-}
+    res.status(200).send({
+      statusCode: 200,
+      message: "Markup and discount updated successfully.",
+      data: updatedData,
+    });
+  } catch (err) {
+    res
+      .status(500)
+      .send({ statusCode: 500, message: err.message || "Unknown error" });
+  }
+};

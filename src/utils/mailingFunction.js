@@ -35,6 +35,7 @@ function AdminBookingMailTemplate(data) {
   const {
     pnr = "NA",
     email,
+    phoneNumber,
     totalAmount,
     passengerDetails = [],
     onward = {},
@@ -89,7 +90,8 @@ function AdminBookingMailTemplate(data) {
 
         <p><strong>PNR:</strong> ${pnr}</p>
         <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Total Amount:</strong> ₹${totalAmount}</p>
+        <p><strong>Phone Number:</strong> ${phoneNumber}</p>
+        <p><strong>Total Amount:</strong> AUD ${totalAmount}</p>
 
         <h3 style="color: #444;">Passengers</h3>
         <table style="width: 100%; border-collapse: collapse; font-size: 14px; margin-bottom: 20px;">

@@ -1,7 +1,7 @@
 const PassengerDetails = require("../models/passengerDetails.model");
 // const { v4: uuidv4 } = require("uuid");
 
-// Save passenger and flight details
+// Save passenger details
 exports.savePassengerDetails = async (req, res) => {
   try {
     const { passengers, contactInfo, selectedFlight } = req.body;
@@ -13,51 +13,33 @@ exports.savePassengerDetails = async (req, res) => {
       });
     }
 
-    // const bookingReference = uuidv4();
+    // Map flights into schema format
+    const mapFlights = (flightsArray = []) =>
+      flightsArray.map((f) => ({
+        carrier: f.carrier,
+        flightNumber: f.number, // frontend field is "number"
+        departure: {
+          location: f.Departure?.location,
+          terminal: f.Departure?.terminal,
+          date: f.Departure?.date,
+          time: f.Departure?.time,
+        },
+        arrival: {
+          location: f.Arrival?.location,
+          terminal: f.Arrival?.terminal,
+          date: f.Arrival?.date,
+          time: f.Arrival?.time,
+        },
+        duration: f.duration,
+        distance: f.distance,
+      }));
 
     const passengerDetails = new PassengerDetails({
-      //   bookingReference,
       passengers,
       contactInfo,
       flights: {
-        onward: {
-          carrier: selectedFlight.Onward.flights[0].carrier,
-          flightNumber: selectedFlight.Onward.flights[0].number,
-          departure: {
-            location: selectedFlight.Onward.flights[0].Departure.location,
-            terminal: selectedFlight.Onward.flights[0].Departure.terminal,
-            date: selectedFlight.Onward.flights[0].Departure.date,
-            time: selectedFlight.Onward.flights[0].Departure.time,
-          },
-          arrival: {
-            location: selectedFlight.Onward.flights[0].Arrival.location,
-            terminal: selectedFlight.Onward.flights[0].Arrival.terminal,
-            date: selectedFlight.Onward.flights[0].Arrival.date,
-            time: selectedFlight.Onward.flights[0].Arrival.time,
-          },
-          duration: selectedFlight.Onward.flights[0].duration,
-          distance: selectedFlight.Onward.flights[0].distance,
-        },
-        return: selectedFlight.Return
-          ? {
-              carrier: selectedFlight.Return.flights[0].carrier,
-              flightNumber: selectedFlight.Return.flights[0].number,
-              departure: {
-                location: selectedFlight.Return.flights[0].Departure.location,
-                terminal: selectedFlight.Return.flights[0].Departure.terminal,
-                date: selectedFlight.Return.flights[0].Departure.date,
-                time: selectedFlight.Return.flights[0].Departure.time,
-              },
-              arrival: {
-                location: selectedFlight.Return.flights[0].Arrival.location,
-                terminal: selectedFlight.Return.flights[0].Arrival.terminal,
-                date: selectedFlight.Return.flights[0].Arrival.date,
-                time: selectedFlight.Return.flights[0].Arrival.time,
-              },
-              duration: selectedFlight.Return.flights[0].duration,
-              distance: selectedFlight.Return.flights[0].distance,
-            }
-          : null,
+        Onward: mapFlights(selectedFlight.Onward?.flights),
+        Return: mapFlights(selectedFlight.Return?.flights || []), // ✅ fallback for one-way trips
       },
     });
 
@@ -66,7 +48,7 @@ exports.savePassengerDetails = async (req, res) => {
     res.status(201).json({
       success: true,
       message: "Passenger details saved successfully",
-      //   bookingReference,
+      data: passengerDetails,
     });
   } catch (error) {
     console.error("Error saving passenger details:", error);

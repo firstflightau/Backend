@@ -1,7 +1,28 @@
 const mongoose = require("mongoose");
 
+// Single flight details schema
+const flightDetailSchema = new mongoose.Schema({
+  carrier: { type: String, required: true },
+  flightNumber: { type: String, required: true }, // frontend: "number"
+  departure: {
+    location: { type: String, required: true },
+    terminal: { type: String },
+    date: { type: Date, required: true },
+    time: { type: String, required: true },
+  },
+  arrival: {
+    location: { type: String, required: true },
+    terminal: { type: String },
+    date: { type: Date, required: true },
+    time: { type: String, required: true },
+  },
+  duration: { type: String },
+  distance: { type: Number },
+});
+
+// Passenger details schema
 const passengerDetailsSchema = new mongoose.Schema({
-  bookingReference: { type: String },
+  bookingReference: { type: String }, // optional unique booking ID
   passengers: [
     {
       type: { type: String, enum: ["ADT", "CHD", "INF"], required: true },
@@ -23,42 +44,8 @@ const passengerDetailsSchema = new mongoose.Schema({
     phoneNumber: { type: String },
   },
   flights: {
-    onward: {
-      carrier: { type: String, required: true },
-      flightNumber: { type: String, required: true },
-      departure: {
-        location: { type: String, required: true },
-        terminal: { type: String },
-        date: { type: Date, required: true },
-        time: { type: String, required: true },
-      },
-      arrival: {
-        location: { type: String, required: true },
-        terminal: { type: String },
-        date: { type: Date, required: true },
-        time: { type: String, required: true },
-      },
-      duration: { type: String },
-      distance: { type: Number },
-    },
-    return: {
-      carrier: { type: String },
-      flightNumber: { type: String },
-      departure: {
-        location: { type: String },
-        terminal: { type: String },
-        date: { type: Date },
-        time: { type: String },
-      },
-      arrival: {
-        location: { type: String },
-        terminal: { type: String },
-        date: { type: Date },
-        time: { type: String },
-      },
-      duration: { type: String },
-      distance: { type: Number },
-    },
+    Onward: [flightDetailSchema], // ✅ Array of flights
+    Return: [flightDetailSchema], // ✅ Array of flights
   },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
