@@ -16,6 +16,7 @@
     "backend": "file:",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.3",
+    "cloudinary": "^1.41.3",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
@@ -24,6 +25,8 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.9.3",
     "morgan": "^1.10.0",
+    "multer": "^2.0.2",
+    "multer-storage-cloudinary": "^4.0.0",
     "nodemailer": "^6.9.16",
     "qs": "^6.13.1",
     "request-ip": "^3.3.0"

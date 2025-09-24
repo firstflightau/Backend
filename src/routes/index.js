@@ -10,6 +10,7 @@ const adminRoutes = require("./admin.routes");
 const topRoute = require("./topFlightRoute.routes");
 const transactionRoute = require("./transaction.routes");
 const passengerDetailsRoutes = require("./passengerDetails.route");
+const topDestination = require("./topDestination.route");
 const router = express.Router();
 
 router.use("/flight", flightRoutes);
@@ -28,5 +29,6 @@ router.use("/contact", contactRoute);
 router.use("/toproute", topRoute);
 router.use("/passenger-details", passengerDetailsRoutes);
 router.use("/admin", adminRoutes);
+router.use("/topdestination", topDestination);
 
 module.exports = router;
