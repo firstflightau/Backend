@@ -23,8 +23,9 @@ exports.createBooking = async (req, res) => {
 
     await sendEmail(
       "New Flight Booking",
-      "it.designo@gmail.com",
+      // "it.designo@gmail.com",
       // "shaanunplugged1234@gmail.com",
+      "firstflight.au@gmail.com",
       AdminBookingMailTemplate(savedBooking)
     );
 
@@ -68,7 +69,11 @@ exports.updateBookingPnr = async (req, res) => {
     booking.pnr = pnr;
     const updatedBooking = await booking.save();
 
-    // await sendEmail(subject, savedUser.email, otpMailTemplate(savedUser));
+    await sendEmail(
+      "Flight Booking Confirmation.",
+      booking.email,
+      AdminBookingMailTemplate(updatedBooking)
+    );
 
     res.status(201).send({
       statusCode: 201,
