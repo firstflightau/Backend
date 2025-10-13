@@ -229,3 +229,57 @@ exports.getAllCountBookingandUsers = async (req, res) => {
     res.status(500).send({ statusCode: 500, message: errorMsg });
   }
 };
+
+// new get all booking
+
+// Get All Bookings (Admin only)
+exports.getAllBookings = async (req, res) => {
+  try {
+    // Optional: Restrict to admin users only
+    // if (!req.user || req.user.role !== "admin") {
+    //   return res.status(403).json({
+    //     statusCode: 403,
+    //     message: "Access denied. Admins only.",
+    //   });
+    // }
+
+    const bookings = await FlightBooking.find().sort({ createdAt: -1 }); // Latest first
+
+    res.status(200).json({
+      statusCode: 200,
+      message: "All bookings fetched successfully",
+      data: bookings,
+    });
+  } catch (err) {
+    const errorMsg = err.message || "Unknown error";
+    res.status(500).json({ statusCode: 500, message: errorMsg });
+  }
+};
+
+// ✅ Get single booking by ID
+exports.getSingleBookingById = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const booking = await FlightBooking.findById(id);
+
+    if (!booking) {
+      return res.status(404).json({
+        statusCode: 404,
+        message: "Booking not found",
+      });
+    }
+
+    res.status(200).json({
+      statusCode: 200,
+      message: "Booking fetched successfully",
+      data: booking,
+    });
+  } catch (error) {
+    const errorMsg = error.message || "Unknown error occurred";
+    res.status(500).json({
+      statusCode: 500,
+      message: errorMsg,
+    });
+  }
+};

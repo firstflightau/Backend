@@ -13,6 +13,19 @@ router.post("/create", authMiddleware, bookingController.createBooking);
 router.patch("/update/:id", authMiddleware, bookingController.updateBookingPnr);
 
 router.get("/single/:id", authMiddleware, bookingController.getSingleBooking);
-router.get("/history/user", authMiddleware, bookingController.getUserBookingHistory);
+router.get(
+  "/history/user",
+  authMiddleware,
+  bookingController.getUserBookingHistory
+);
+
+// new
+router.get(
+  "/all",
+
+  bookingController.getAllBookings
+);
+
+router.get("/singles/:id", bookingController.getSingleBookingById);
 
 module.exports = router;
