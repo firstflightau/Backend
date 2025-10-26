@@ -11,6 +11,7 @@ const topRoute = require("./topFlightRoute.routes");
 const transactionRoute = require("./transaction.routes");
 const passengerDetailsRoutes = require("./passengerDetails.route");
 const topDestination = require("./topDestination.route");
+const metadataRoute = require("./metadata.routes");
 const router = express.Router();
 
 router.use("/flight", flightRoutes);
@@ -30,5 +31,6 @@ router.use("/toproute", topRoute);
 router.use("/passenger-details", passengerDetailsRoutes);
 router.use("/admin", adminRoutes);
 router.use("/topdestination", topDestination);
+router.use("/metadata", metadataRoute);
 
 module.exports = router;
