@@ -18,7 +18,7 @@ const tokenURL = process.env.TP_TOKEN_URL;
 
 exports.api = {
   //Common Token 
-  tokenURL: `${tokenURL}/oauth/oauth20/token`,
+  tokenURL: `${tokenURL}/oauth/token`,
 
     //search url
     flightSearchUrl:
